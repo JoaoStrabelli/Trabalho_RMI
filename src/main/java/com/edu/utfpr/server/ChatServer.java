@@ -381,7 +381,7 @@ public class ChatServer extends UnicastRemoteObject implements IChatServer {
                     dialogExit.setSize(300, 300);
                     JPanel panelExit = new JPanel();
                     panelExit.setLayout(new GridLayout());
-                    JButton confirmButton = new JButton("Cancel");
+                    JButton confirmButton = new JButton("Confirm");
                     confirmButton.addActionListener(e -> {
                         try {
                             leaveGroup(userFound.name, chat);
