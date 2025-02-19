@@ -7,7 +7,11 @@ import com.edu.utfpr.core.exceptions.InvalidUserOrPasswordException;
 import com.edu.utfpr.core.exceptions.UserAlreadyRegisteredException;
 import com.edu.utfpr.server.IChatServer;
 
+import java.awt.Desktop;
+import javax.swing.*;
+import java.io.*;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -79,6 +83,68 @@ public class ChatClient extends UnicastRemoteObject implements IChatClient {
         }
     }
 
+    @Override
+    public void receiveFile(String sender, String fileName, byte[] fileData, int length) throws RemoteException {
+        System.out.println("Recebendo arquivo '" + fileName + "' de " + sender + " (" + length + " bytes)");
+
+        File downloadDir = new File("downloads");
+        if (!downloadDir.exists()) {
+            downloadDir.mkdirs();
+        }
+
+        File receivedFile = new File(downloadDir, fileName);
+
+        try (FileOutputStream fos = new FileOutputStream(receivedFile)) {
+            fos.write(fileData, 0, length);
+            System.out.println("Arquivo salvo em: " + receivedFile.getAbsolutePath());
+
+            String fileMessage = sender + " enviou um arquivo: " + fileName;
+            Messages message = new Messages(new User(sender, null), fileMessage);
+            currentChat.messages.add(message);
+
+            for (Consumer<Messages> listener : onReceiveMessageListeners) {
+                listener.accept(message);
+            }
+
+            SwingUtilities.invokeLater(() -> {
+                int option = JOptionPane.showConfirmDialog(
+                        null,
+                        "Você recebeu um arquivo de " + sender + ": " + fileName + ".\nDeseja abrir agora?",
+                        "Arquivo recebido",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if (option == JOptionPane.YES_OPTION) {
+                    abrirArquivo(receivedFile);
+                }
+            });
+
+        } catch (IOException e) {
+            System.err.println("Erro ao salvar o arquivo: " + e.getMessage());
+        }
+    }
+
+
+
+    private void abrirArquivo(File file) {
+        try {
+            if (Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+                if (file.exists()) {
+                    desktop.open(file);
+                } else {
+                    JOptionPane.showMessageDialog(null, "O arquivo não foi encontrado!", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Abrir arquivos não é suportado neste sistema!", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao abrir o arquivo: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+    }
+
+
     public void addChangeCurrentChatListener(Consumer<Chat> listener) {
         changeCurrentChatListeners.add(listener);
     }
@@ -141,7 +207,6 @@ public class ChatClient extends UnicastRemoteObject implements IChatClient {
         if (currentChat == null) {
             return null;
         }
-
         return currentChat.chatId;
     }
 
@@ -149,5 +214,48 @@ public class ChatClient extends UnicastRemoteObject implements IChatClient {
     public void sendInviteAdmin(String userName, Chat chat) throws RemoteException {
         server.createInviteGroup(userName, chat);
     }
+
+
+    public void sendFile(File file) throws RemoteException {
+        if (currentChat == null) {
+            System.err.println("Nenhum chat selecionado.");
+            return;
+        }
+
+        try {
+            byte[] fileData = Files.readAllBytes(file.toPath());
+
+            for (User member : currentChat.members) {
+                if (!member.getName().equals(userName)) { // Não envia para si mesmo
+                    server.sendFile(userName, member.getName(), fileData, file.getName());
+                }
+            }
+
+            System.out.println("Arquivo enviado para o chat '" + currentChat.name + "'.");
+
+        } catch (IOException e) {
+            System.err.println("Erro ao ler o arquivo: " + e.getMessage());
+        }
+    }
+
+
+    public void sendFile(String receiver, byte[] fileData, String fileName) throws RemoteException {
+        server.sendFile(userName, receiver, fileData, fileName);
+        System.out.println("Arquivo enviado com sucesso!");
+    }
+
+
+    private byte[] readFileToBytes(File file) throws IOException {
+        try (FileInputStream fis = new FileInputStream(file);
+             ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                bos.write(buffer, 0, bytesRead);
+            }
+            return bos.toByteArray();
+        }
+    }
+
 
 }

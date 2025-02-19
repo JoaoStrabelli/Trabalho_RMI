@@ -42,4 +42,8 @@ public interface IChatServer extends Remote {
         List<Chat> getAllGroups() throws RemoteException;
 
         List<Chat> getMyChats(String userName) throws RemoteException;
+
+        void sendFile(String sender, String receiver, byte[] fileData, String fileName) throws RemoteException;
+
+
 }

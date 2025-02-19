@@ -317,6 +317,23 @@ public class ChatServer extends UnicastRemoteObject implements IChatServer {
     }
 
     @Override
+    public void sendFile(String sender, String receiver, byte[] fileData, String fileName) throws RemoteException {
+        User recipient = users.stream()
+                .filter(user -> user.getName().equals(receiver))
+                .findFirst()
+                .orElse(null);
+
+        if (recipient != null && recipient.getClient() != null) {
+            recipient.getClient().receiveFile(sender, fileName, fileData, fileData.length);
+            System.out.println("Arquivo enviado de " + sender + " para " + receiver);
+        } else {
+            System.out.println("Usuário " + receiver + " não encontrado ou offline.");
+        }
+    }
+
+
+
+    @Override
     public void sendMessage(String user, Chat chatParam, String message, JPanel inputPanel) throws RemoteException {
         User userFound = users.stream().filter(u -> u.name.equals(user)).findFirst().orElse(null);
         Chat chat;

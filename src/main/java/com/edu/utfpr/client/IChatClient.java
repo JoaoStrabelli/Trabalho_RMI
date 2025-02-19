@@ -21,4 +21,8 @@ public interface IChatClient extends Remote {
     void receiveMessage(Messages message) throws RemoteException;
 
     void sendInviteAdmin(String userName, Chat chat) throws RemoteException;
+
+    void receiveFile(String sender, String fileName, byte[] fileData, int length) throws RemoteException;
+
+
 }
