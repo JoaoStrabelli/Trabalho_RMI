@@ -414,7 +414,7 @@ public class ChatServer extends UnicastRemoteObject implements IChatServer {
                             String username = message.substring(message.indexOf(" "));
                             if (command.trim().equals("/accept")) {
                                 if (userFound.equals(chat.admin)) {
-                                    System.err.println("User " + username);
+                                    System.err.println("Usuário " + username);
                                     User userToAccept = chat.pendingUsers.stream()
                                             .filter(u -> u.name.equals(username.trim())).findFirst().orElse(null);
                                     if (userToAccept != null) {
