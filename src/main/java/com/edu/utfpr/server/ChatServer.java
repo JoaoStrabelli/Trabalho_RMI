@@ -349,7 +349,7 @@ public class ChatServer extends UnicastRemoteObject implements IChatServer {
                 case "/invites":
                     if (userFound.equals(chat.admin)) {
                         JDialog dialogInvites = new JDialog((Frame) null, "Criar novo grupo", true);
-                        dialogInvites.setTitle("Lista de Pedidor - " + chat.name);
+                        dialogInvites.setTitle("Lista de Pedidos - " + chat.name);
                         dialogInvites.setAlwaysOnTop(true);
                         dialogInvites.setSize(200, 400);
                         JPanel panelInvites = new JPanel();
