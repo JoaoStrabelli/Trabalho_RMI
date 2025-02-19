@@ -15,7 +15,7 @@ public class LoginAndRegisterGUI extends JFrame {
     private ChatClient chatClient;
 
     public LoginAndRegisterGUI() {
-        setTitle("Conversation - Authentication");
+        setTitle("WhatsUT - Authentication");
         setSize(300, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

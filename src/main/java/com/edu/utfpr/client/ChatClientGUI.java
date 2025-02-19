@@ -17,7 +17,7 @@ public class ChatClientGUI extends JFrame {
     public ChatClientGUI(ChatClient chatClient) throws RemoteException {
         this.chatClient = chatClient;
 
-        frame = new JFrame("Conversation - " + chatClient.userName);
+        frame = new JFrame("WhatsUT - " + chatClient.userName);
 
         Container c = getContentPane();
         JPanel outerPanel = new JPanel(new BorderLayout());
@@ -51,7 +51,7 @@ public class ChatClientGUI extends JFrame {
     }
 
     public JButton createGroupButton() {
-        sendButton = new JButton("+ Create new group");
+        sendButton = new JButton("+ Criar novo grupo");
         sendButton.addActionListener(e -> {
 
             NewGroupDialog DialogCreateGroup = new NewGroupDialog();
