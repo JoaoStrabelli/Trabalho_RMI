@@ -7,7 +7,6 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Objects;
 
 public class LoginAndRegisterGUI extends JFrame {
     private final JTextField usernameField;
@@ -15,8 +14,8 @@ public class LoginAndRegisterGUI extends JFrame {
     private ChatClient chatClient;
 
     public LoginAndRegisterGUI() {
-        setTitle("WhatsUT - Autenticação");
-        setSize(300, 500);
+        setTitle("WhatsUT - Login");
+        setSize(280, 280);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -24,62 +23,35 @@ public class LoginAndRegisterGUI extends JFrame {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets = new Insets(5, 10, 5, 10); // Margens entre componentes
 
-        ImageIcon logoIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/logo.png")));
-        Image image = logoIcon.getImage();
-        Image resizedImage = image.getScaledInstance(image.getWidth(null) / 4, image.getHeight(null) / 4,
-                java.awt.Image.SCALE_SMOOTH);
-        logoIcon = new ImageIcon(resizedImage);
-        JLabel logoLabel = new JLabel();
-        logoLabel.setIcon(logoIcon);
-        constraints.gridwidth = 2;
+        // Campo Usuário
         constraints.gridx = 0;
         constraints.gridy = 0;
-        panel.add(logoLabel, constraints);
-
-        constraints.gridwidth = 2;
-        constraints.gridy = 1;
         panel.add(new JLabel("Usuário:"), constraints);
 
         usernameField = new JTextField();
-        usernameField.setPreferredSize(new Dimension(250, 25));
-        constraints.gridx = 0;
-        constraints.gridy = 2;
-        constraints.weightx = 1;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridy = 1;
         panel.add(usernameField, constraints);
 
-        constraints.gridy = 3;
-        constraints.gridwidth = 2;
-        panel.add(Box.createRigidArea(new Dimension(0, 8)), constraints);
-
-        constraints.gridx = 0;
-        constraints.gridy = 4;
+        // Campo Senha
+        constraints.gridy = 2;
         panel.add(new JLabel("Senha:"), constraints);
 
         passwordField = new JPasswordField();
-        constraints.gridy = 5;
-        constraints.gridx = 0;
+        constraints.gridy = 3;
         panel.add(passwordField, constraints);
 
-        constraints.gridy = 6;
-        constraints.gridwidth = 2;
-        panel.add(Box.createRigidArea(new Dimension(0, 16)), constraints);
-
+        // Botão Login
         JButton loginButton = new JButton("Entrar");
-        loginButton.addActionListener(e1 -> loginButtonActionPerformed());
-        constraints.gridy = 7;
-        constraints.gridx = 0;
+        loginButton.addActionListener(e -> loginButtonActionPerformed());
+        constraints.gridy = 4;
         panel.add(loginButton, constraints);
 
-        constraints.gridy = 8;
-        constraints.gridwidth = 2;
-        panel.add(Box.createRigidArea(new Dimension(0, 4)), constraints);
-
+        // Botão Registro
         JButton registerButton = new JButton("Registrar");
         registerButton.addActionListener(e -> registerButtonActionPerformed());
-        constraints.gridy = 9;
-        constraints.gridx = 0;
+        constraints.gridy = 5;
         panel.add(registerButton, constraints);
 
         add(panel);
@@ -87,11 +59,8 @@ public class LoginAndRegisterGUI extends JFrame {
 
     public static void main(String[] args) throws UnsupportedLookAndFeelException {
         FlatLightLaf.setup();
-
         UIManager.setLookAndFeel(new FlatIntelliJLaf());
-
-        LoginAndRegisterGUI loginAndRegisterGUI = new LoginAndRegisterGUI();
-        loginAndRegisterGUI.setVisible(true);
+        new LoginAndRegisterGUI().setVisible(true);
     }
 
     private void loginButtonActionPerformed() {
@@ -110,23 +79,20 @@ public class LoginAndRegisterGUI extends JFrame {
 
     private void registerButtonActionPerformed() {
         String userName = usernameField.getText().trim();
-        String password = new String(passwordField.getPassword());
-        password = password.trim();
+        String password = new String(passwordField.getPassword()).trim();
+
         if (!userName.isEmpty() && !password.isEmpty()) {
             try {
-                chatClient = new ChatClient(usernameField.getText());
-                chatClient.register(usernameField.getText(), new String(passwordField.getPassword()));
-                JOptionPane.showMessageDialog(this, "Usuário registrado com sucesso", "Sucesso",
-                        JOptionPane.INFORMATION_MESSAGE);
+                chatClient = new ChatClient(userName);
+                chatClient.register(userName, password);
+                JOptionPane.showMessageDialog(this, "Usuário registrado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             } catch (UserAlreadyRegisteredException ex) {
-                JOptionPane.showMessageDialog(this, "Usuário já registrado", "Erro", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Usuário já registrado.", "Erro", JOptionPane.ERROR_MESSAGE);
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Erro ao registrar usuário", "Erro", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Erro ao registrar usuário.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Preencha os campos de usuário e senha corretamente.", "Erro",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Preencha os campos de usuário e senha corretamente.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
-
     }
 }
