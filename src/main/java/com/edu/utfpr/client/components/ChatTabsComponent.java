@@ -64,7 +64,7 @@ public class ChatTabsComponent extends JPanel {
         });
         JPanel chatsPanel = new JPanel(new BorderLayout());
         chatsPanel.add(new JScrollPane(myChatsList), BorderLayout.CENTER);
-        tabbedPane.addTab("My Chats", chatsPanel);
+        tabbedPane.addTab("Meus Chats", chatsPanel);
     }
 
     private void setupUsersTab() {
@@ -87,7 +87,7 @@ public class ChatTabsComponent extends JPanel {
         });
         JPanel usersPanel = new JPanel(new BorderLayout());
         usersPanel.add(new JScrollPane(allUsersList), BorderLayout.CENTER);
-        tabbedPane.addTab("Online user", usersPanel);
+        tabbedPane.addTab("Usuários Onlines", usersPanel);
     }
 
     private void setupGroupsTab() {
@@ -102,12 +102,12 @@ public class ChatTabsComponent extends JPanel {
                     try {
                         chatClient.sendInviteAdmin(chatClient.userName, chat);
                         JOptionPane.showMessageDialog(tabbedPane,
-                                "Your request to join the group has been sent. Wait for the administrator to accept your entry.",
-                                "Order sent",
+                                "Seu pedido para entrar no grupo foi enviado ao administrador. Espere o administrador aceitar para entrar.",
+                                "Pedido enviado",
                                 JOptionPane.INFORMATION_MESSAGE);
                     } catch (RemoteException ex) {
                         ex.printStackTrace();
-                        JOptionPane.showMessageDialog(tabbedPane, "EError sending order.", "Error",
+                        JOptionPane.showMessageDialog(tabbedPane, "Erro ao mandar pedido.", "Error",
                                 JOptionPane.ERROR_MESSAGE);
                     }
                 }
@@ -115,7 +115,7 @@ public class ChatTabsComponent extends JPanel {
         });
         JPanel groupsPanel = new JPanel(new BorderLayout());
         groupsPanel.add(new JScrollPane(groupsList), BorderLayout.CENTER);
-        tabbedPane.addTab("Public groups", groupsPanel);
+        tabbedPane.addTab("Grupos publicos", groupsPanel);
     }
 
     private ListCellRenderer<? super User> createUsersListsCellRenderer() {

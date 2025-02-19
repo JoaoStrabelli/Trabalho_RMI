@@ -24,7 +24,7 @@ public class ChatRenderComponent extends JPanel {
     }
 
     private void initComponent() {
-        String welcome = "Welcome to Conversation, select a chat and start a conversation...\n";
+        String welcome = "Bem-Vindo ao WhatsUT, Escolha um chat para começar ...\n";
         textArea = new JTextArea(welcome, 14, 50);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);

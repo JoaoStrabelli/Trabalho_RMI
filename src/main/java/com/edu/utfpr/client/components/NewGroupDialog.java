@@ -10,7 +10,7 @@ public class NewGroupDialog {
 
     public void openCreateGroupDialog(ChatClient chatClient) {
 
-        JDialog dialog = new JDialog((Frame) null, "Create New Group", true);
+        JDialog dialog = new JDialog((Frame) null, "Criar novo grupo", true);
         dialog.setSize(500, 200);
         dialog.setLayout(new BorderLayout());
         dialog.setAlwaysOnTop(true);
@@ -18,12 +18,12 @@ public class NewGroupDialog {
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new GridLayout(5, 2));
 
-        JLabel nameLabel = new JLabel("Group name:");
+        JLabel nameLabel = new JLabel("Nome do grupo:");
         JTextField nameField = new JTextField();
 
-        JRadioButton radio1 = new JRadioButton("When admin leaves, choose someone else to be admin");
+        JRadioButton radio1 = new JRadioButton("Quando administrador sair, escolher novo administrador para o grupo");
 
-        JRadioButton radio2 = new JRadioButton("When admin leaves delete group");
+        JRadioButton radio2 = new JRadioButton("Deletar o grupo ao administrador sair!");
         radio2.setSelected(true);
 
         ButtonGroup group = new ButtonGroup();
@@ -40,8 +40,8 @@ public class NewGroupDialog {
         dialog.add(formPanel, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
-        JButton createButton = new JButton("Create");
-        JButton cancelButton = new JButton("Cancel");
+        JButton createButton = new JButton("Criar");
+        JButton cancelButton = new JButton("Cancelar");
 
         createButton.addActionListener(e -> {
             String groupName = nameField.getText();
@@ -51,16 +51,16 @@ public class NewGroupDialog {
                     chatClient.createChatGroup(groupName, chatClient.userName, radioRamdom);
                 } catch (RemoteException e1) {
                     e1.printStackTrace();
-                    JOptionPane.showMessageDialog(dialog, "Error creating group!", "Error",
+                    JOptionPane.showMessageDialog(dialog, "Erro ao criar grupo!", "Error",
                             JOptionPane.ERROR_MESSAGE);
                     dialog.dispose();
                 }
-                System.out.println("Group " + groupName + " created!");
-                JOptionPane.showMessageDialog(dialog, "Group " + groupName + " Created!", "Success",
+                System.out.println("Group " + groupName + " Criado!");
+                JOptionPane.showMessageDialog(dialog, "Grupo " + groupName + " Criado!", "Sucesso",
                         JOptionPane.INFORMATION_MESSAGE);
                 dialog.dispose();
             } else {
-                JOptionPane.showMessageDialog(dialog, "The group name cannot be empty.", "Error",
+                JOptionPane.showMessageDialog(dialog, "O nome do grupo não pode ser vazio!", "Error",
                         JOptionPane.ERROR_MESSAGE);
             }
         });
