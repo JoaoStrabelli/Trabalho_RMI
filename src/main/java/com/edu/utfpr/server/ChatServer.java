@@ -419,11 +419,11 @@ public class ChatServer extends UnicastRemoteObject implements IChatServer {
                                             .filter(u -> u.name.equals(username.trim())).findFirst().orElse(null);
                                     if (userToAccept != null) {
                                         this.acceptInviteGroup(userToAccept.name, chat);
-                                        newMessage = new Messages(userFound, "User " + userToAccept.name
+                                        newMessage = new Messages(userFound, "Usuário " + userToAccept.name
                                                 + " Foi aceito ao grupo pelo administrador.");
                                         chat.messages.add(newMessage);
                                     } else {
-                                        JOptionPane.showMessageDialog(inputPanel, "Usuário inválido!", "Error",
+                                        JOptionPane.showMessageDialog(inputPanel, "Usuário inválido!", "Erro",
                                                 JOptionPane.ERROR_MESSAGE);
                                         newMessage = new Messages(userFound, message);
                                         chat.messages.add(newMessage);
@@ -443,7 +443,7 @@ public class ChatServer extends UnicastRemoteObject implements IChatServer {
                                                 + " Foi removido do grupo pelo administrador");
                                         chat.messages.add(newMessage);
                                     } else {
-                                        JOptionPane.showMessageDialog(inputPanel, "Erro ao remover usuário!", "Error",
+                                        JOptionPane.showMessageDialog(inputPanel, "Erro ao remover usuário!", "Erro",
                                                 JOptionPane.ERROR_MESSAGE);
                                         newMessage = new Messages(userFound, message);
                                         chat.messages.add(newMessage);

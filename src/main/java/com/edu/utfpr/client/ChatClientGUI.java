@@ -70,8 +70,8 @@ public class ChatClientGUI extends JFrame {
             if (!message.trim().isEmpty()) {
                 if (message.equals("/help")) {
                     JOptionPane.showMessageDialog(inputPanel,
-                            "User commands: \n /members -> List of members \n /exit -> Leave group  \n \n Admin command: \n /invites -> displays the list of group invitees \n /accept {UserName} -> Add the user to the group \n /ban {UserName} -> Remove the user from the group",
-                            "Command list",
+                            "Comandos de usuário: \n /members -> Ver lista de membros \n /exit -> Sair do grupo  \n \n Comandos de admin: \n /invites -> exibe a lista de invites do grupo \n /accept {UserName} -> Adiciona o usuário no grupo \n /ban {UserName} -> Remove o usuário do grupo",
+                            "Lista de comandos",
                             JOptionPane.INFORMATION_MESSAGE);
                     textField.setText("");
                 } else {

@@ -15,7 +15,7 @@ public class LoginAndRegisterGUI extends JFrame {
     private ChatClient chatClient;
 
     public LoginAndRegisterGUI() {
-        setTitle("WhatsUT - Authentication");
+        setTitle("WhatsUT - Autenticação");
         setSize(300, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -39,7 +39,7 @@ public class LoginAndRegisterGUI extends JFrame {
 
         constraints.gridwidth = 2;
         constraints.gridy = 1;
-        panel.add(new JLabel("User:"), constraints);
+        panel.add(new JLabel("Usuário:"), constraints);
 
         usernameField = new JTextField();
         constraints.gridx = 0;
@@ -52,7 +52,7 @@ public class LoginAndRegisterGUI extends JFrame {
 
         constraints.gridx = 0;
         constraints.gridy = 4;
-        panel.add(new JLabel("Password:"), constraints);
+        panel.add(new JLabel("Senha:"), constraints);
 
         passwordField = new JPasswordField();
         constraints.gridy = 5;
@@ -63,7 +63,7 @@ public class LoginAndRegisterGUI extends JFrame {
         constraints.gridwidth = 2;
         panel.add(Box.createRigidArea(new Dimension(0, 16)), constraints);
 
-        JButton loginButton = new JButton("Enter");
+        JButton loginButton = new JButton("Entrar");
         loginButton.addActionListener(e1 -> loginButtonActionPerformed());
         constraints.gridy = 7;
         constraints.gridx = 0;
@@ -73,7 +73,7 @@ public class LoginAndRegisterGUI extends JFrame {
         constraints.gridwidth = 2;
         panel.add(Box.createRigidArea(new Dimension(0, 4)), constraints);
 
-        JButton registerButton = new JButton("Register");
+        JButton registerButton = new JButton("Registrar");
         registerButton.addActionListener(e -> registerButtonActionPerformed());
         constraints.gridy = 9;
         constraints.gridx = 0;
@@ -99,9 +99,9 @@ public class LoginAndRegisterGUI extends JFrame {
             new ChatClientGUI(chatClient);
             dispose();
         } catch (InvalidUserOrPasswordException ex) {
-            JOptionPane.showMessageDialog(this, "User or password invalid", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Usuário ou senha inválidos", "Erro", JOptionPane.ERROR_MESSAGE);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error authenticating user", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Erro ao autenticar usuário", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -113,15 +113,15 @@ public class LoginAndRegisterGUI extends JFrame {
             try {
                 chatClient = new ChatClient(usernameField.getText());
                 chatClient.register(usernameField.getText(), new String(passwordField.getPassword()));
-                JOptionPane.showMessageDialog(this, "User registered successfully", "Success",
+                JOptionPane.showMessageDialog(this, "Usuário registrado com sucesso", "Sucesso",
                         JOptionPane.INFORMATION_MESSAGE);
             } catch (UserAlreadyRegisteredException ex) {
-                JOptionPane.showMessageDialog(this, "Already registered user", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Usuário já registrado", "Erro", JOptionPane.ERROR_MESSAGE);
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Error registering user", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Erro ao registrar usuário", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Fill in the username and password fields correctly", "Error",
+            JOptionPane.showMessageDialog(this, "Preencha os campos de usuário e senha corretamente.", "Erro",
                     JOptionPane.ERROR_MESSAGE);
         }
 
