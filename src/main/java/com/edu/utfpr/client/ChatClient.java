@@ -237,25 +237,4 @@ public class ChatClient extends UnicastRemoteObject implements IChatClient {
             System.err.println("Erro ao ler o arquivo: " + e.getMessage());
         }
     }
-
-
-    public void sendFile(String receiver, byte[] fileData, String fileName) throws RemoteException {
-        server.sendFile(userName, receiver, fileData, fileName);
-        System.out.println("Arquivo enviado com sucesso!");
-    }
-
-
-    private byte[] readFileToBytes(File file) throws IOException {
-        try (FileInputStream fis = new FileInputStream(file);
-             ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = fis.read(buffer)) != -1) {
-                bos.write(buffer, 0, bytesRead);
-            }
-            return bos.toByteArray();
-        }
-    }
-
-
 }
