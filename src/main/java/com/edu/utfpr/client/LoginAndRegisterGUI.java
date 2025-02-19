@@ -2,8 +2,8 @@ package com.edu.utfpr.client;
 
 import com.edu.utfpr.core.exceptions.InvalidUserOrPasswordException;
 import com.edu.utfpr.core.exceptions.UserAlreadyRegisteredException;
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,8 +42,11 @@ public class LoginAndRegisterGUI extends JFrame {
         panel.add(new JLabel("Usuário:"), constraints);
 
         usernameField = new JTextField();
+        usernameField.setPreferredSize(new Dimension(250, 25));
         constraints.gridx = 0;
         constraints.gridy = 2;
+        constraints.weightx = 1;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
         panel.add(usernameField, constraints);
 
         constraints.gridy = 3;
@@ -85,7 +88,7 @@ public class LoginAndRegisterGUI extends JFrame {
     public static void main(String[] args) throws UnsupportedLookAndFeelException {
         FlatLightLaf.setup();
 
-        UIManager.setLookAndFeel(new FlatMacDarkLaf());
+        UIManager.setLookAndFeel(new FlatIntelliJLaf());
 
         LoginAndRegisterGUI loginAndRegisterGUI = new LoginAndRegisterGUI();
         loginAndRegisterGUI.setVisible(true);
