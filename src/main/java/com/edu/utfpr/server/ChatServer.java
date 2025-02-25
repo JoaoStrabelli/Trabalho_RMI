@@ -100,18 +100,27 @@ public class ChatServer extends UnicastRemoteObject implements IChatServer {
 
     @Override
     public void acceptInviteGroup(String userName, Chat chatParam) throws RemoteException {
-
-        Chat chat = groups.stream().filter(chats -> chats.getName().equals(chatParam.name)).findFirst().orElse(null);
-        User userParam = chat.pendingUsers.stream().filter(user -> user.getName().equals(userName)).findFirst()
+        Chat chat = groups.stream()
+                .filter(chats -> chats.getName().equals(chatParam.name))
+                .findFirst()
                 .orElse(null);
-        int indexUser = chat.pendingUsers.indexOf(userParam);
+
+        User userParam = chat.pendingUsers.stream()
+                .filter(user -> user.getName().equals(userName))
+                .findFirst()
+                .orElse(null);
 
         if (userParam != null) {
-            chat.pendingUsers.remove(indexUser);
+            chat.pendingUsers.remove(userParam);
             chat.members.add(userParam);
 
             Integer indexChat = groups.indexOf(chat);
             groups.set(indexChat, chat);
+
+            // Notificar o usuário que ele foi aceito no grupo
+            if (userParam.getClient() != null) {
+                userParam.getClient().notifyUserAccepted(chatParam.name);
+            }
 
             updatePublicGroupList();
             updateMyChatsList(userParam);
@@ -120,7 +129,6 @@ public class ChatServer extends UnicastRemoteObject implements IChatServer {
 
     @Override
     public void removeUserGroup(String userName, Chat chatParam) throws RemoteException {
-
         Chat chat = groups.stream().filter(chats -> chats.getName().equals(chatParam.name)).findFirst().orElse(null);
         User userParam = chat.members.stream().filter(user -> user.getName().equals(userName)).findFirst().orElse(null);
         int indexUser = chat.members.indexOf(userParam);
@@ -163,7 +171,6 @@ public class ChatServer extends UnicastRemoteObject implements IChatServer {
 
     @Override
     public void leaveGroup(String UserName, Chat chatParam) throws RemoteException {
-
         User currentUser = users.stream().filter(user -> user.getName().equals(UserName)).findFirst().orElse(null);
         Chat chat = groups.stream().filter(chats -> chats.getName().equals(chatParam.name)).findFirst().orElse(null);
         Messages newMessage = null;
@@ -237,6 +244,12 @@ public class ChatServer extends UnicastRemoteObject implements IChatServer {
         }
 
         userCredentials.put(userName, password);
+    }
+
+    @Override
+    public void notifyUserAccepted(String groupName) throws RemoteException {
+        // Este método não precisa fazer nada no servidor.
+        // A notificação será enviada diretamente ao cliente.
     }
 
     private void updateUserList() {
@@ -330,8 +343,6 @@ public class ChatServer extends UnicastRemoteObject implements IChatServer {
             System.out.println("Usuário " + receiver + " não encontrado ou offline.");
         }
     }
-
-
 
     @Override
     public void sendMessage(String user, Chat chatParam, String message, JPanel inputPanel) throws RemoteException {
@@ -512,5 +523,4 @@ public class ChatServer extends UnicastRemoteObject implements IChatServer {
             }
         }
     }
-
 }

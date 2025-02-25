@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import javax.swing.JPanel;
-
 public class ChatClient extends UnicastRemoteObject implements IChatClient {
     private final String hostName = "localhost";
     private final List<Consumer<List<User>>> changeUserListListeners = new ArrayList<>();
@@ -124,8 +122,6 @@ public class ChatClient extends UnicastRemoteObject implements IChatClient {
         }
     }
 
-
-
     private void abrirArquivo(File file) {
         try {
             if (Desktop.isDesktopSupported()) {
@@ -143,7 +139,6 @@ public class ChatClient extends UnicastRemoteObject implements IChatClient {
             ex.printStackTrace();
         }
     }
-
 
     public void addChangeCurrentChatListener(Consumer<Chat> listener) {
         changeCurrentChatListeners.add(listener);
@@ -215,6 +210,17 @@ public class ChatClient extends UnicastRemoteObject implements IChatClient {
         server.createInviteGroup(userName, chat);
     }
 
+    @Override
+    public void notifyUserAccepted(String groupName) throws RemoteException {
+        SwingUtilities.invokeLater(() -> {
+            JOptionPane.showMessageDialog(
+                    null, // parentComponent
+                    "Você foi aceito no grupo: " + groupName, // message
+                    "Aceito no Grupo", // title
+                    JOptionPane.INFORMATION_MESSAGE // messageType
+            );
+        });
+    }
 
     public void sendFile(File file) throws RemoteException {
         if (currentChat == null) {

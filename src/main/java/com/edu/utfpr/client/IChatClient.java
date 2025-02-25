@@ -24,5 +24,6 @@ public interface IChatClient extends Remote {
 
     void receiveFile(String sender, String fileName, byte[] fileData, int length) throws RemoteException;
 
+    void notifyUserAccepted(String groupName) throws RemoteException;
 
 }
